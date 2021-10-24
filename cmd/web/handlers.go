@@ -23,6 +23,44 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func (app *application) showHub(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, "hub.page.tmpl", &templateData{
+		Form: forms.New(nil),
+	})
+}
+
+func (app *application) showGame(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
+	if err != nil || id < 1 {
+		app.notFound(w)
+		return
+	}
+	s, err := app.games.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+	app.render(w, r, "game.page.tmpl", &templateData{
+		Game: s,
+	})
+}
+
+func (app *application) showListOfGames(w http.ResponseWriter, r *http.Request) {
+	s, err := app.games.GetAll()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	app.render(w, r, "games.page.tmpl", &templateData{
+		Games: s,
+	})
+}
+
 func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
 	if err != nil || id < 1 {
@@ -154,7 +192,7 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 
 	app.session.Put(r, "userID", id)
 
-	http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
+	http.Redirect(w, r, "/hub", http.StatusSeeOther)
 }
 
 func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {

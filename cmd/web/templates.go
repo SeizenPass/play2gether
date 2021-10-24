@@ -10,13 +10,15 @@ import (
 )
 
 type templateData struct {
-	AuthenticatedUser *models.User
-	CSRFToken         string
-	CurrentYear       int
-	Flash             string
-	Form              *forms.Form
-	Snippet           *models.Snippet
-	Snippets          []*models.Snippet
+	AuthenticatedUser 	*models.User
+	CSRFToken         	string
+	CurrentYear       	int
+	Flash             	string
+	Form              	*forms.Form
+	Snippet           	*models.Snippet
+	Snippets          	[]*models.Snippet
+	Game			  	*models.Game
+	Games				[]*models.Game
 }
 
 // humanDate func returns a formatted string
