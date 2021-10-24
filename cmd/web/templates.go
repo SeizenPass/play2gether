@@ -23,6 +23,7 @@ type templateData struct {
 	Users				[]*models.User
 	Ownership 			*models.GameOwnership
 	Reviews				[]*models.Review
+	Chats				[]*models.Chat
 }
 
 // humanDate func returns a formatted string

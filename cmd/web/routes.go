@@ -34,6 +34,9 @@ func (app *application) routes(staticDir string) http.Handler {
 	mux.Post("/review/add/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.addReview))
 	mux.Get("/review/show/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showReviews))
 
+	//mux by id
+	mux.Get("/chat", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showChats))
+
 	mux.Get("/user/signup", dynamicMiddleware.ThenFunc(app.signupUserForm))
 	mux.Post("/user/signup", dynamicMiddleware.ThenFunc(app.signupUser))
 	mux.Get("/user/login", dynamicMiddleware.ThenFunc(app.loginUserForm))

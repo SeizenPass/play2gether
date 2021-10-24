@@ -32,6 +32,7 @@ type application struct {
 	games		  	*mysql.GameModel
 	gamesOwnerships	*mysql.GameOwnershipModel
 	reviews   		*mysql.ReviewModel
+	chatMessages    *mysql.ChatMessageModel
 }
 
 func main() {
@@ -83,6 +84,7 @@ func main() {
 		templateCache: templateCache,
 		users:         &mysql.UserModel{DB: db},
 		reviews:       &mysql.ReviewModel{DB: db},
+		chatMessages:  &mysql.ChatMessageModel{DB: db},
 	}
 
 	tlsConfig := &tls.Config{

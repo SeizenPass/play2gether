@@ -123,6 +123,56 @@ func (app *application) showUsers(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func (app *application) showChats(w http.ResponseWriter, r *http.Request) {
+	userID := app.session.GetInt(r, "userID")
+	s, err := app.chatMessages.GetAllByUserID(userID)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	chats := []*models.Chat{}
+	chatMap :=	make(map[int][]*models.ChatMessage)
+	for _, v := range s {
+		var resID int
+		if v.SenderID == userID {
+			resID = v.ReceiverID
+		} else {
+			resID = v.SenderID
+		}
+		if chatMap[resID] == nil {
+			chatMap[resID] = []*models.ChatMessage{}
+		}
+		chatMap[resID] = append(chatMap[resID], v)
+	}
+
+	for k, v := range chatMap {
+		chat := &models.Chat{}
+		u, err := app.users.Get(k)
+		if err != nil {
+			if errors.Is(err, models.ErrNoRecord) {
+				app.notFound(w)
+			} else {
+				app.serverError(w, err)
+			}
+			return
+		}
+		chat.Companion = u
+		chat.Messages = v
+		unread := 0
+		for _, ur := range chat.Messages {
+			if !ur.IsRead {
+				unread++
+			}
+		}
+		chat.Unread = unread
+		chats = append(chats, chat)
+	}
+
+	app.render(w, r, "chats.page.tmpl", &templateData{
+		Chats: chats,
+	})
+}
+
 func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
 	if err != nil || id < 1 {
@@ -448,7 +498,7 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 
 	app.session.Put(r, "userID", id)
 
-	http.Redirect(w, r, "/hub", http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/user/%d", id), http.StatusSeeOther)
 }
 
 func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {

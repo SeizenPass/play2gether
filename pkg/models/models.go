@@ -49,3 +49,18 @@ type Review struct {
 	ReviewedID			int
 	ReviewText			string
 }
+
+type ChatMessage struct {
+	ID             		int
+	SenderID 			int
+	ReceiverID			int
+	Content				string
+	IsRead				bool
+	CreatedAt			time.Time
+}
+
+type Chat struct {
+	Companion			*User
+	Messages  			[]*ChatMessage
+	Unread				int
+}
