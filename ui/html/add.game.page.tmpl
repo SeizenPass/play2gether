@@ -1,0 +1,36 @@
+{{template "base" .}}
+
+{{define "title"}}Add Game{{end}}
+
+{{define "body"}}
+    <form action='/game/add' method='POST'>
+        <!-- Include the CSRF token -->
+        <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
+        {{with .Form}}
+            <div>
+                <label>Title:</label>
+                {{with .Errors.Get "title"}}
+                    <label class='error'>{{.}}</label>
+                {{end}}
+                <input type='text' name='title' value='{{.Get "title"}}'>
+            </div>
+            <div>
+                <label>Description:</label>
+                {{with .Errors.Get "description"}}
+                    <label class='error'>{{.}}</label>
+                {{end}}
+                <textarea name='description'>{{.Get "description"}}</textarea>
+            </div>
+            <div>
+                <label>Image Link:</label>
+                {{with .Errors.Get "image_link"}}
+                    <label class='error'>{{.}}</label>
+                {{end}}
+                <input type='text' name='image_link' value='{{.Get "image_link"}}'>
+            </div>
+            <div>
+                <input type='submit' value='Add Game'>
+            </div>
+        {{end}}
+    </form>
+{{end}}

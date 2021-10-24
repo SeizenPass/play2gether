@@ -44,8 +44,17 @@ func (app *application) showGame(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
+	ows, err := app.gamesOwnerships.GetByGameID(id)
+	users := []*models.User{}
+	for _, v := range ows {
+		u, err := app.users.Get(v.UserID)
+		if err == nil {
+			users = append(users, u)
+		}
+	}
 	app.render(w, r, "game.page.tmpl", &templateData{
 		Game: s,
+		Users: users,
 	})
 }
 
@@ -86,6 +95,82 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 func (app *application) createSnippetForm(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, "create.page.tmpl", &templateData{
 		Form: forms.New(nil),
+	})
+}
+
+func (app *application) addGameForm(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, "add.game.page.tmpl", &templateData{
+		Form: forms.New(nil),
+	})
+}
+
+func (app *application) addGame(w http.ResponseWriter, r *http.Request)  {
+	// parse POST data into PostForm map
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	form := forms.New(r.PostForm)
+	form.Required("title")
+	form.MaxLength("title", 255)
+	form.MaxLength("description", 2000)
+	form.MaxLength("image_link", 500)
+
+	if !form.Valid() {
+		app.render(w, r, "add.game.page.tmpl", &templateData{
+			Form: form,
+		})
+		return
+	}
+
+	id, err := app.games.Insert(form.Get("title"), form.Get("image_link"), form.Get("description"))
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	// add a flash message to the session to indicate to the user success
+	app.session.Put(r, "flash", "Game successfully added!")
+
+	http.Redirect(w, r, fmt.Sprintf("/game/%d", id), http.StatusSeeOther)
+}
+
+func (app *application) showUser(w http.ResponseWriter, r *http.Request)  {
+	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
+	if err != nil || id < 1 {
+		app.notFound(w)
+		return
+	}
+	s, err := app.users.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+	ows, err := app.gamesOwnerships.GetByUserID(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+	games := []*models.Game{}
+	for _, v := range ows{
+		g, err := app.games.Get(v.GameID)
+		if err == nil {
+			games = append(games, g)
+		}
+	}
+	app.render(w, r, "profile.page.tmpl", &templateData{
+		User: s,
+		Games: games,
 	})
 }
 
@@ -136,7 +221,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	form := forms.New(r.PostForm)
-	form.Required("name", "email", "password")
+	form.Required("name", "email", "password", "image_link")
 	form.MatchesPattern("email", forms.EmailRX)
 	form.MinLength("password", 10)
 
@@ -147,7 +232,8 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.users.Insert(form.Get("name"), form.Get("email"), form.Get("password"))
+	err = app.users.Insert(form.Get("name"), form.Get("email"),
+		form.Get("password"), form.Get("image_link"))
 	if err == models.ErrDuplicateEmail {
 		form.Errors.Add("email", "Address is already in use")
 		app.render(w, r, "signup.page.tmpl", &templateData{

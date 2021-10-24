@@ -11,7 +11,7 @@ type GameModel struct {
 	DB *sql.DB
 }
 
-func (m *GameModel) Insert(title, content, expires string) (int, error) {
+func (m *GameModel) Insert(title, imageLink, description string) (int, error) {
 	stmt := `INSERT INTO games (title, image_link, description)
 	VALUES(?, ?, ?)`
 
@@ -20,7 +20,7 @@ func (m *GameModel) Insert(title, content, expires string) (int, error) {
 		return 0, err
 	}
 
-	result, err := transaction.Exec(stmt, title, content, expires)
+	result, err := transaction.Exec(stmt, title, imageLink, description)
 	if err != nil {
 		transaction.Rollback()
 		return 0, nil
@@ -64,7 +64,11 @@ func (m *GameModel) Get(id int) (*models.Game, error) {
 }
 
 func (m *GameModel) GetAll() ([]*models.Game, error) {
-	stmt := `SELECT id, title, image_link, description FROM games ORDER BY title`
+	stmt := `SELECT g.id, g.title, g.image_link, g.description, COUNT(go.user_id)
+FROM games g
+LEFT JOIN games_ownership go on g.id = go.game_id
+GROUP BY g.id
+ORDER BY 5 DESC, 2`
 
 	rows, err := m.DB.Query(stmt)
 	if err != nil {
@@ -77,7 +81,7 @@ func (m *GameModel) GetAll() ([]*models.Game, error) {
 
 	for rows.Next() {
 		s := &models.Game{}
-		err = rows.Scan(&s.ID, &s.Title, &s.ImageLink, &s.Description)
+		err = rows.Scan(&s.ID, &s.Title, &s.ImageLink, &s.Description, &s.Players)
 		if err != nil {
 			return nil, err
 		}
@@ -90,3 +94,4 @@ func (m *GameModel) GetAll() ([]*models.Game, error) {
 
 	return games, nil
 }
+

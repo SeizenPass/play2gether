@@ -16,6 +16,7 @@ type Game struct {
 	Title		string
 	ImageLink	string
 	Description string
+	Players		int
 }
 
 type Snippet struct {
@@ -32,4 +33,11 @@ type User struct {
 	Email          string
 	HashedPassword []byte
 	Created        time.Time
+	ImageLink	   string
+}
+
+type GameOwnership struct {
+	ID             	int
+	UserID 			int
+	GameID			int
 }
