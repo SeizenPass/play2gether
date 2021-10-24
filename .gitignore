@@ -50,7 +50,7 @@ builds/**/images/*
 #*.jpeg
 
 # security / ssl
-*.pem
+
 *.xxjson
 
 
