@@ -6,8 +6,8 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
+	"github.com/SeizenPass/play2gether/pkg/models"
 	"github.com/go-sql-driver/mysql"
-	"github.com/kwhitlock/lets-go-book/pkg/models"
 )
 
 type UserModel struct {

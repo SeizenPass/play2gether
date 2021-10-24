@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/kwhitlock/lets-go-book/pkg/forms"
-	"github.com/kwhitlock/lets-go-book/pkg/models"
+	"github.com/SeizenPass/play2gether/pkg/forms"
+	"github.com/SeizenPass/play2gether/pkg/models"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {

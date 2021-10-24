@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/kwhitlock/lets-go-book/pkg/forms"
-	"github.com/kwhitlock/lets-go-book/pkg/models"
+	"github.com/SeizenPass/play2gether/pkg/forms"
+	"github.com/SeizenPass/play2gether/pkg/models"
 )
 
 type templateData struct {

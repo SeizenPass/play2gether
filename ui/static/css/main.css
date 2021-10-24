@@ -12,8 +12,8 @@ html, body {
 
 body {
     line-height: 1.5;
-    background-color: #F1F3F6;
-    color: #34495E;
+    background-color: #2A0944;
+    color: #FEC260;
     overflow-y: scroll;
 }
 
@@ -31,7 +31,7 @@ section {
 h1 a {
     font-size: 36px;
     font-weight: bold;
-    background-image: url("/static/img/logo.png");
+    /**background-image: url("/static/img/logo.png");*/
     background-repeat: no-repeat;
     background-position: 0px 0px;
     height: 36px;
@@ -41,7 +41,7 @@ h1 a {
 
 h1 a:hover {
     text-decoration: none;
-    color: #34495E;
+    color: #A12568;
 }
 
 h2 {
@@ -52,12 +52,12 @@ h2 {
 }
 
 a {
-    color: #62CB31;
+    color: #A12568;
     text-decoration: none;
 }
 
 a:hover {
-    color: #4EB722;
+    color: #FEC260;
     text-decoration: underline;
 }
 
@@ -67,13 +67,12 @@ textarea, input:not([type="submit"]) {
 }
 
 header {
-    background-image: -webkit-linear-gradient(left, #34495e, #34495e 25%, #9b59b6 25%, #9b59b6 35%, #3498db 35%, #3498db 45%, #62cb31 45%, #62cb31 55%, #ffb606 55%, #ffb606 65%, #e67e22 65%, #e67e22 75%, #e74c3c 85%, #e74c3c 85%, #c0392b 85%, #c0392b 100%);
+    /**background-image: -webkit-linear-gradient(left, #34495e, #34495e 25%, #9b59b6 25%, #9b59b6 35%, #3498db 35%, #3498db 45%, #62cb31 45%, #62cb31 55%, #ffb606 55%, #ffb606 65%, #e67e22 65%, #e67e22 75%, #e74c3c 85%, #e74c3c 85%, #c0392b 85%, #c0392b 100%);
     background-image: -moz-linear-gradient(left, #34495e, #34495e 25%, #9b59b6 25%, #9b59b6 35%, #3498db 35%, #3498db 45%, #62cb31 45%, #62cb31 55%, #ffb606 55%, #ffb606 65%, #e67e22 65%, #e67e22 75%, #e74c3c 85%, #e74c3c 85%, #c0392b 85%, #c0392b 100%);
     background-image: -ms-linear-gradient(left, #34495e, #34495e 25%, #9b59b6 25%, #9b59b6 35%, #3498db 35%, #3498db 45%, #62cb31 45%, #62cb31 55%, #ffb606 55%, #ffb606 65%, #e67e22 65%, #e67e22 75%, #e74c3c 85%, #e74c3c 85%, #c0392b 85%, #c0392b 100%);
-    background-image: linear-gradient(to right, #34495e, #34495e 25%, #9b59b6 25%, #9b59b6 35%, #3498db 35%, #3498db 45%, #62cb31 45%, #62cb31 55%, #ffb606 55%, #ffb606 65%, #e67e22 65%, #e67e22 75%, #e74c3c 85%, #e74c3c 85%, #c0392b 85%, #c0392b 100%);
+    background-image: linear-gradient(to right, #34495e, #34495e 25%, #9b59b6 25%, #9b59b6 35%, #3498db 35%, #3498db 45%, #62cb31 45%, #62cb31 55%, #ffb606 55%, #ffb606 65%, #e67e22 65%, #e67e22 75%, #e74c3c 85%, #e74c3c 85%, #c0392b 85%, #c0392b 100%);*/
     background-size: 100% 6px;
     background-repeat: no-repeat;
-    border-bottom: 1px solid #E4E5E7;
     overflow: auto;
     padding-top: 33px;
     padding-bottom: 27px;
@@ -81,15 +80,15 @@ header {
 }
 
 header a {
-    color: #34495E;
+    color: #FEC260;
     text-decoration: none;
 }
 
 nav {
-    border-bottom: 1px solid #E4E5E7;
+
     padding-top: 17px;
     padding-bottom: 15px;
-    background: #F7F9FA;
+    background: #3B185F;
     height: 60px;
     color: #6A6C6F;
 }
@@ -119,7 +118,7 @@ nav div:last-child a {
 }
 
 nav a.live {
-    color: #34495E;
+    color: #FEC260;
     cursor: default;
 }
 
@@ -135,17 +134,17 @@ nav a.live:after {
     top: 9px;
     width: 14px;
     height: 14px;
-    background: #F7F9FA;
-    border-left: 1px solid #E4E5E7;
-    border-bottom: 1px solid #E4E5E7;
+    background: #FEC260;
+    border-left: 1px solid #FEC260;
+    border-bottom: 1px solid #FEC260;
     -moz-transform: rotate(45deg);
     -webkit-transform: rotate(-45deg);
 }
 
-a.button, input[type="submit"] {
-    background-color: #62CB31;
+a.button, input[type="submit"], input[type="button"] {
+    background-color: #3B185F;
     border-radius: 3px;
-    color: #FFFFFF;
+    color: #FEC260;
     padding: 18px 27px;
     border: none;
     display: inline-block;
@@ -153,9 +152,9 @@ a.button, input[type="submit"] {
     font-weight: 700;
 }
 
-a.button:hover, input[type="submit"]:hover {
-    background-color: #4EB722;
-    color: #FFFFFF;
+a.button:hover, input[type="submit"]:hover, input[type="button"] {
+    background-color: #A12568;
+    color: #FEC260;
     cursor: pointer;
     text-decoration: none;
 }
@@ -165,7 +164,7 @@ form div {
 }
 
 form div:last-child {
-    border-top: 1px dashed #E4E5E7;
+    border-top: 1px dashed #FEC260;
 }
 
 form input[type="radio"] {
@@ -180,10 +179,14 @@ form input[type="text"], form input[type="password"], form input[type="email"] {
 }
 
 form input[type=text], form input[type="password"], form input[type="email"], textarea {
-    color: #6A6C6F;
-    background: #FFFFFF;
-    border: 1px solid #E4E5E7;
+    color: #FEC260;
+    background: #3B185F;
+    border: 1px solid #A12568;
     border-radius: 3px;
+}
+
+form input[type=text]:focus {
+    border-color: #FEC260;
 }
 
 form label {
@@ -262,9 +265,9 @@ button:hover {
 }
 
 div.flash {
-    color: #FFFFFF;
+    color: #FEC260;
     font-weight: bold;
-    background-color: #34495E;
+    background-color: #3B185F;
     padding: 18px;
     margin-bottom: 36px;
     text-align: center;
@@ -305,11 +308,10 @@ tr:nth-child(2n) {
 }
 
 footer {
-    border-top: 1px solid #E4E5E7;
     padding-top: 17px;
     padding-bottom: 15px;
-    background: #F7F9FA;
+    background: #3B185F;
     height: 60px;
-    color: #6A6C6F;
+    color: #FEC260;
     text-align: center;
 }
