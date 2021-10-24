@@ -52,10 +52,59 @@ func (app *application) showGame(w http.ResponseWriter, r *http.Request) {
 			users = append(users, u)
 		}
 	}
+	userID := app.session.GetInt(r, "userID")
+	ow, err := app.gamesOwnerships.GetByUserIDAndGameID(userID, id)
 	app.render(w, r, "game.page.tmpl", &templateData{
 		Game: s,
 		Users: users,
+		Ownership: ow,
 	})
+}
+
+func (app *application) addOwnership(w http.ResponseWriter, r *http.Request)  {
+	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
+	if err != nil || id < 1 {
+		app.notFound(w)
+		return
+	}
+	userID := app.session.GetInt(r, "userID")
+	_, err = app.gamesOwnerships.Insert(id, userID)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	// add a flash message to the session to indicate to the user success
+	app.session.Put(r, "flash", "Game was added to your library!")
+
+	http.Redirect(w, r, fmt.Sprintf("/game/%d", id), http.StatusSeeOther)
+}
+
+func (app *application) removeOwnership(w http.ResponseWriter, r *http.Request)  {
+	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
+	if err != nil || id < 1 {
+		app.notFound(w)
+		return
+	}
+	ow, err := app.gamesOwnerships.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+	err = app.gamesOwnerships.Remove(id)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	// add a flash message to the session to indicate to the user success
+	app.session.Put(r, "flash", "Game was removed from your library!")
+
+	http.Redirect(w, r, fmt.Sprintf("/game/%d", ow.GameID), http.StatusSeeOther)
 }
 
 func (app *application) showListOfGames(w http.ResponseWriter, r *http.Request) {

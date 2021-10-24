@@ -27,6 +27,9 @@ func (app *application) routes(staticDir string) http.Handler {
 	mux.Get("/game/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showGame))
 	mux.Get("/game", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showListOfGames))
 
+	mux.Get("/ownership/add/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.addOwnership))
+	mux.Get("/ownership/remove/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.removeOwnership))
+
 
 	mux.Get("/user/signup", dynamicMiddleware.ThenFunc(app.signupUserForm))
 	mux.Post("/user/signup", dynamicMiddleware.ThenFunc(app.signupUser))

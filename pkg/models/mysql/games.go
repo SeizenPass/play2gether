@@ -65,10 +65,10 @@ func (m *GameModel) Get(id int) (*models.Game, error) {
 
 func (m *GameModel) GetAll() ([]*models.Game, error) {
 	stmt := `SELECT g.id, g.title, g.image_link, g.description, COUNT(go.user_id)
-FROM games g
-LEFT JOIN games_ownership go on g.id = go.game_id
-GROUP BY g.id
-ORDER BY 5 DESC, 2`
+			FROM games g
+			LEFT JOIN games_ownership go on g.id = go.game_id
+			GROUP BY g.id
+			ORDER BY 5 DESC, 2`
 
 	rows, err := m.DB.Query(stmt)
 	if err != nil {
