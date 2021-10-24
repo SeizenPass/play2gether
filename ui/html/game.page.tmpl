@@ -9,7 +9,9 @@
         <div>
             <img src="{{.ImageLink}}" alt="Game Photo">
             <div id="meta">
-                Metadata
+                <form action="" method="post" style="display: flex; justify-content: center;">
+                    <input type="submit" value="Add to Library">
+                </form>
             </div>
         </div>
         <div>
@@ -19,4 +21,27 @@
         </div>
     </div>
 {{end}}
+    <h2 style="text-align: center">Players: {{len .Users}}</h2>
+    {{if .Users}}
+        <table>
+            <tr>
+                <th style="text-align: center">Avatar</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>ID</th>
+            </tr>
+            {{range .Users}}
+                <tr>
+                    <td class="td-poster">
+                        <img src="{{.ImageLink}}" alt="Visual">
+                    </td>
+                    <td><a href='/game/{{.ID}}' style="color: #FEC260">{{.Name}}</a></td>
+                    <td>{{.Email}}</td>
+                    <td>#{{.ID}}</td>
+                </tr>
+            {{end}}
+        </table>
+    {{else}}
+        <p>There's nothing to see here yet!</p>
+    {{end}}
 {{end}}

@@ -4,5 +4,6 @@ CREATE TABLE IF NOT EXISTS users (
     email               VARCHAR(255)    NOT NULL,
     hashed_password     CHAR(60)        NOT NULL,
     created             DATETIME        NOT NULL,
-    active              BOOLEAN         NOT NULL DEFAULT TRUE
+    active              BOOLEAN         NOT NULL DEFAULT TRUE,
+    image_link          VARCHAR(500)
 );

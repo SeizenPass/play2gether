@@ -219,7 +219,7 @@ button {
 }
 
 button:hover {
-    color: #4EB722;
+    color: #FEC260;
     text-decoration: underline;
     cursor: pointer;
 }
@@ -334,9 +334,31 @@ footer {
     padding-bottom: 0;
     padding-top: 0;
     display: flex;
+    justify-content: center;
     align-items: center;
 }
 
 .td-poster img{
     height: 50px;
+}
+
+.profile-card {
+    display: grid;
+    grid-template-columns: 35% 65%;
+    grid-column-gap: 10px;
+}
+
+.profile-image {
+    padding: 0 10px;
+}
+
+.profile-image img {
+    object-fit: cover;
+    width: 100%;
+    border: 3px solid #A12568;
+}
+
+.bio div {
+    display: flex;
+    justify-content: space-between;
 }

@@ -7,9 +7,9 @@
     {{if .Games}}
         <table>
             <tr>
-                <th>Poster</th>
+                <th style="text-align: center">Poster</th>
                 <th>Title</th>
-                <th>Created</th>
+                <th style="text-align: center">Players</th>
                 <th>ID</th>
             </tr>
             {{range .Games}}
@@ -18,7 +18,7 @@
                         <img src="{{.ImageLink}}" alt="Visual">
                     </td>
                     <td><a href='/game/{{.ID}}' style="color: #FEC260">{{.Title}}</a></td>
-                    <td>Smth</td>
+                    <td style="text-align: center">{{.Players}}</td>
                     <td>#{{.ID}}</td>
                 </tr>
             {{end}}

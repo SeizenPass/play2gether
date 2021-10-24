@@ -19,6 +19,8 @@ type templateData struct {
 	Snippets          	[]*models.Snippet
 	Game			  	*models.Game
 	Games				[]*models.Game
+	User 				*models.User
+	Users				[]*models.User
 }
 
 // humanDate func returns a formatted string

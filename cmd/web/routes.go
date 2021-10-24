@@ -22,15 +22,18 @@ func (app *application) routes(staticDir string) http.Handler {
 
 	/* Play2GetHer */
 	mux.Get("/hub", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showHub))
+	mux.Get("/game/add", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.addGameForm))
+	mux.Post("/game/add", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.addGame))
 	mux.Get("/game/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showGame))
 	mux.Get("/game", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showListOfGames))
+
 
 	mux.Get("/user/signup", dynamicMiddleware.ThenFunc(app.signupUserForm))
 	mux.Post("/user/signup", dynamicMiddleware.ThenFunc(app.signupUser))
 	mux.Get("/user/login", dynamicMiddleware.ThenFunc(app.loginUserForm))
 	mux.Post("/user/login", dynamicMiddleware.ThenFunc(app.loginUser))
 	mux.Post("/user/logout", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.logoutUser))
-	mux.Get("/user/profile", dynamicMiddleware.ThenFunc(app.profilePage))
+	mux.Get("/user/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showUser))
 
 	fileserver := http.FileServer(http.Dir(staticDir))
 	mux.Get("/static/", http.StripPrefix("/static", fileserver))
