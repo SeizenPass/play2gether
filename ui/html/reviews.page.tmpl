@@ -1,0 +1,28 @@
+{{template "base" .}}
+
+{{define "title"}}Reviews of {{.User.Name}}{{end}}
+
+{{define "body"}}
+    <a href="/review/add/{{.User.ID}}">
+        <input type="button" value="Add New Review" style="width: 100%; margin-bottom: 20px">
+    </a>
+    <h2>Reviews of <a style="font-size: inherit" href="/user/{{.User.ID}}">{{.User.Name}}</a></h2>
+    {{if .Reviews}}
+        <table>
+            <tr>
+                <th>Review</th>
+                <th>Reviewer</th>
+                <th>ID</th>
+            </tr>
+            {{range .Reviews}}
+                <tr>
+                    <td>{{.ReviewText}}</td>
+                    <td><a href="/user/{{.ReviewerID}}">Link</a></td>
+                    <td>#{{.ID}}</td>
+                </tr>
+            {{end}}
+        </table>
+    {{else}}
+        <p>There's nothing to see here yet!</p>
+    {{end}}
+{{end}}

@@ -31,6 +31,7 @@ type application struct {
 	users         	*mysql.UserModel
 	games		  	*mysql.GameModel
 	gamesOwnerships	*mysql.GameOwnershipModel
+	reviews   		*mysql.ReviewModel
 }
 
 func main() {
@@ -81,6 +82,7 @@ func main() {
 		gamesOwnerships: &mysql.GameOwnershipModel{DB: db},
 		templateCache: templateCache,
 		users:         &mysql.UserModel{DB: db},
+		reviews:       &mysql.ReviewModel{DB: db},
 	}
 
 	tlsConfig := &tls.Config{
@@ -110,7 +112,8 @@ func main() {
 	// anonymous function
 	go func() {
 		infoLog.Printf("Starting server on %s", *addr)
-		err = srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
+		//err = srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
+		err = srv.ListenAndServe()
 		errorLog.Fatal(err)
 	}()
 

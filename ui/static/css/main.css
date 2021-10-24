@@ -37,6 +37,7 @@ h1 a {
     height: 36px;
     padding-left: 50px;
     position: relative;
+    transition: all 300ms ease-out;
 }
 
 h1 a:hover {
@@ -54,6 +55,7 @@ h2 {
 a {
     color: #A12568;
     text-decoration: none;
+    transition: all 300ms ease-out;
 }
 
 a:hover {
@@ -85,8 +87,7 @@ header a {
 }
 
 nav {
-    padding-top: 17px;
-    padding-bottom: 15px;
+    padding: 17px 100px 15px;
     background: #3B185F;
     height: 60px;
     color: #6A6C6F;
@@ -149,6 +150,7 @@ a.button, input[type="submit"], input[type="button"] {
     display: inline-block;
     margin-top: 18px;
     font-weight: 700;
+    transition: all 300ms ease-out;
 }
 
 a.button:hover, input[type="submit"]:hover, input[type="button"] {
@@ -162,8 +164,16 @@ form div {
     margin-bottom: 18px;
 }
 
+form.profile-card div {
+    margin-bottom: 0;
+}
+
 form div:last-child {
     border-top: 1px dashed #FEC260;
+}
+
+form.profile-card div:last-child {
+    border-top: 0;
 }
 
 form input[type="radio"] {
@@ -352,6 +362,16 @@ footer {
     padding: 0 10px;
 }
 
+.profile-image a input[type=button] {
+    width: 100%;
+    background: #3B185F;
+}
+
+.profile-image a input[type=button]:hover {
+    width: 100%;
+    background: #A12568;
+}
+
 .profile-image img {
     object-fit: cover;
     width: 100%;
@@ -361,4 +381,32 @@ footer {
 .bio div {
     display: flex;
     justify-content: space-between;
+}
+
+.list-games {
+    margin-top: 10px;
+}
+
+.list-games h2 {
+    margin-bottom: 0;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #3B185F;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #FEC260;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #A12568;
 }

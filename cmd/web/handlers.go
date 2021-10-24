@@ -11,15 +11,7 @@ import (
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-
-	s, err := app.snippets.Latest()
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-
 	app.render(w, r, "home.page.tmpl", &templateData{
-		Snippets: s,
 	})
 }
 
@@ -119,6 +111,18 @@ func (app *application) showListOfGames(w http.ResponseWriter, r *http.Request) 
 	})
 }
 
+func (app *application) showUsers(w http.ResponseWriter, r *http.Request) {
+	s, err := app.users.GetAll()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	app.render(w, r, "users.page.tmpl", &templateData{
+		Users: s,
+	})
+}
+
 func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
 	if err != nil || id < 1 {
@@ -145,6 +149,73 @@ func (app *application) createSnippetForm(w http.ResponseWriter, r *http.Request
 	app.render(w, r, "create.page.tmpl", &templateData{
 		Form: forms.New(nil),
 	})
+}
+
+func (app *application) addReviewForm(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
+	if err != nil || id < 1 {
+		app.notFound(w)
+		return
+	}
+	user, err := app.users.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+	app.render(w, r, "add.review.page.tmpl", &templateData{
+		User: user,
+		Form: forms.New(nil),
+	})
+}
+
+func (app *application) addReview(w http.ResponseWriter, r *http.Request)  {
+	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
+	if err != nil || id < 1 {
+		app.notFound(w)
+		return
+	}
+	// parse POST data into PostForm map
+	err = r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	form := forms.New(r.PostForm)
+	form.Required("text")
+	form.MaxLength("text", 1500)
+
+	if !form.Valid() {
+		user, err := app.users.Get(id)
+		if err != nil {
+			if errors.Is(err, models.ErrNoRecord) {
+				app.notFound(w)
+			} else {
+				app.serverError(w, err)
+			}
+			return
+		}
+		app.render(w, r, "add.game.page.tmpl", &templateData{
+			Form: form,
+			User: user,
+		})
+		return
+	}
+	userID := app.session.GetInt(r,"userID")
+	_, err = app.reviews.Insert(form.Get("text"), userID, id)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	// add a flash message to the session to indicate to the user success
+	app.session.Put(r, "flash", "Review successfully added!")
+
+	http.Redirect(w, r, fmt.Sprintf("/user/%d", id), http.StatusSeeOther)
 }
 
 func (app *application) addGameForm(w http.ResponseWriter, r *http.Request) {
@@ -223,6 +294,36 @@ func (app *application) showUser(w http.ResponseWriter, r *http.Request)  {
 	})
 }
 
+func (app *application) showReviews(w http.ResponseWriter, r *http.Request)  {
+	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
+	if err != nil || id < 1 {
+		app.notFound(w)
+		return
+	}
+	s, err := app.users.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+	reviews, err := app.reviews.GetByReviewedID(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+	app.render(w, r, "reviews.page.tmpl", &templateData{
+		User: s,
+		Reviews: reviews,
+	})
+}
+
 func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 
 	// parse POST data into PostForm map
@@ -297,6 +398,26 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 	app.session.Put(r, "flash", "Your signup was successful. Please log in.")
 
 	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+}
+
+func (app *application) updateUser(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	form := forms.New(r.PostForm)
+	form.Required("bio")
+	form.MatchesPattern("email", forms.EmailRX)
+	form.MaxLength("bio", 1500)
+	// TODO: revert if form is not valid
+
+	id := app.session.GetInt(r, "userID")
+	err = app.users.Update(id, form.Get("bio"))
+	app.session.Put(r, "flash", "Your bio was updated.")
+
+	http.Redirect(w, r, fmt.Sprintf("/user/%d", id), http.StatusSeeOther)
 }
 
 func (app *application) loginUserForm(w http.ResponseWriter, r *http.Request) {

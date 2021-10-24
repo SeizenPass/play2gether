@@ -34,10 +34,18 @@ type User struct {
 	HashedPassword []byte
 	Created        time.Time
 	ImageLink	   string
+	Bio 		   *string
 }
 
 type GameOwnership struct {
 	ID             	int
 	UserID 			int
 	GameID			int
+}
+
+type Review struct {
+	ID             		int
+	ReviewerID 			int
+	ReviewedID			int
+	ReviewText			string
 }

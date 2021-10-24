@@ -34,6 +34,14 @@ func (m *UserModel) Insert(name, email, password, imageLink string) error {
 	return err
 }
 
+func (m *UserModel) Update(id int, bio string) error {
+
+	stmt := `UPDATE users SET bio = ? WHERE id = ?`
+
+	_, err := m.DB.Exec(stmt, bio, id)
+	return err
+}
+
 func (m *UserModel) Authenticate(email, password string) (int, error) {
 	var id int
 	var hashedPassword []byte
@@ -59,8 +67,8 @@ func (m *UserModel) Authenticate(email, password string) (int, error) {
 func (m *UserModel) Get(id int) (*models.User, error) {
 	s := &models.User{}
 
-	stmt := `SELECT id, name, email, created, image_link FROM users WHERE id = ?`
-	err := m.DB.QueryRow(stmt, id).Scan(&s.ID, &s.Name, &s.Email, &s.Created, &s.ImageLink)
+	stmt := `SELECT id, name, email, created, image_link, bio FROM users WHERE id = ?`
+	err := m.DB.QueryRow(stmt, id).Scan(&s.ID, &s.Name, &s.Email, &s.Created, &s.ImageLink, &s.Bio)
 	if err == sql.ErrNoRows {
 		return nil, models.ErrNoRecord
 	} else if err != nil {
@@ -68,4 +76,33 @@ func (m *UserModel) Get(id int) (*models.User, error) {
 	}
 
 	return s, nil
+}
+
+func (m *UserModel) GetAll() ([]*models.User, error) {
+	stmt := `SELECT id, name, email, image_link, bio
+			FROM users`
+
+	rows, err := m.DB.Query(stmt)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	users := []*models.User{}
+
+	for rows.Next() {
+		s := &models.User{}
+		err = rows.Scan(&s.ID, &s.Name, &s.Email, &s.ImageLink, &s.Bio)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, s)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return users, nil
 }
