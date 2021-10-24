@@ -1,0 +1,29 @@
+{{template "base" .}}
+
+{{define "title"}}Your Chats{{end}}
+
+{{define "body"}}
+    <h2>Chats</h2>
+    {{if .Chats}}
+        <table>
+            <tr>
+                <th style="text-align: center">Poster</th>
+                <th>Name</th>
+                <th>Last Message</th>
+                <th >Unread</th>
+            </tr>
+            {{range .Chats}}
+                <tr onclick="document.location = window.location.protocol + '//' + window.location.host + '/chat/{{.Companion.ID}}';">
+                    <td class="td-poster">
+                        <img src="{{.Companion.ImageLink}}" alt="Visual">
+                    </td>
+                    <td><a href='/user/{{.Companion.ID}}' style="color: #FEC260">{{.Companion.Name}}</a></td>
+                    <td>{{with index .Messages 0}}{{.Content}}{{end}}</td>
+                    <td style="color: #FEC260">{{if ne .Unread 0}}{{.Unread}}{{end}}</td>
+                </tr>
+            {{end}}
+        </table>
+    {{else}}
+        <p>There's nothing to see here yet!</p>
+    {{end}}
+{{end}}

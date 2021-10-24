@@ -1,0 +1,23 @@
+{{template "base" .}}
+
+{{define "title"}}Add Game{{end}}
+
+{{define "body"}}
+    <h2>Review on <a style="font-size: inherit" href="/user/{{.User.ID}}">{{.User.Name}}</a></h2>
+    <form action='/review/add/{{.User.ID}}' method='POST'>
+        <!-- Include the CSRF token -->
+        <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
+        {{with .Form}}
+            <div>
+                <label>Review Text:</label>
+                {{with .Errors.Get "text"}}
+                    <label class='error'>{{.}}</label>
+                {{end}}
+                <textarea name="text">{{.Get "text"}}</textarea>
+            </div>
+            <div>
+                <input type='submit' value='Submit Review'>
+            </div>
+        {{end}}
+    </form>
+{{end}}

@@ -34,10 +34,33 @@ type User struct {
 	HashedPassword []byte
 	Created        time.Time
 	ImageLink	   string
+	Bio 		   *string
 }
 
 type GameOwnership struct {
 	ID             	int
 	UserID 			int
 	GameID			int
+}
+
+type Review struct {
+	ID             		int
+	ReviewerID 			int
+	ReviewedID			int
+	ReviewText			string
+}
+
+type ChatMessage struct {
+	ID             		int
+	SenderID 			int
+	ReceiverID			int
+	Content				string
+	IsRead				bool
+	CreatedAt			time.Time
+}
+
+type Chat struct {
+	Companion			*User
+	Messages  			[]*ChatMessage
+	Unread				int
 }

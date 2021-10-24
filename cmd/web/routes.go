@@ -27,6 +27,15 @@ func (app *application) routes(staticDir string) http.Handler {
 	mux.Get("/game/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showGame))
 	mux.Get("/game", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showListOfGames))
 
+	mux.Get("/ownership/add/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.addOwnership))
+	mux.Get("/ownership/remove/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.removeOwnership))
+
+	mux.Get("/review/add/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.addReviewForm))
+	mux.Post("/review/add/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.addReview))
+	mux.Get("/review/show/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showReviews))
+
+	//mux by id
+	mux.Get("/chat", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showChats))
 
 	mux.Get("/user/signup", dynamicMiddleware.ThenFunc(app.signupUserForm))
 	mux.Post("/user/signup", dynamicMiddleware.ThenFunc(app.signupUser))
@@ -34,6 +43,8 @@ func (app *application) routes(staticDir string) http.Handler {
 	mux.Post("/user/login", dynamicMiddleware.ThenFunc(app.loginUser))
 	mux.Post("/user/logout", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.logoutUser))
 	mux.Get("/user/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showUser))
+	mux.Post("/user/update", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.updateUser))
+	mux.Get("/users", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showUsers))
 
 	fileserver := http.FileServer(http.Dir(staticDir))
 	mux.Get("/static/", http.StripPrefix("/static", fileserver))

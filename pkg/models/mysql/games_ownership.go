@@ -120,3 +120,30 @@ func (m *GameOwnershipModel) GetByUserID(id int) ([]*models.GameOwnership, error
 	return ows, nil
 }
 
+func (m *GameOwnershipModel) GetByUserIDAndGameID(userID, gameID int) (*models.GameOwnership, error) {
+	stmt := `SELECT id, game_id, user_id FROM games_ownership
+	WHERE user_id = ? AND game_id = ?`
+
+	row := m.DB.QueryRow(stmt, userID, gameID)
+
+	// init a pointer to new Snippet struct
+	s := &models.GameOwnership{}
+
+	err := row.Scan(&s.ID, &s.GameID, &s.UserID)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, models.ErrNoRecord
+		} else {
+			return nil, err
+		}
+	}
+	return s, nil
+}
+
+func (m *GameOwnershipModel) Remove(id int) (error) {
+	stmt := `DELETE FROM games_ownership
+	WHERE id = ?`
+	_, err := m.DB.Exec(stmt, id)
+	return err
+}
+

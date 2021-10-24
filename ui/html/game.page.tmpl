@@ -3,24 +3,30 @@
 {{define "title"}}Game | {{.Game.Title}}{{end}}
 
 {{define "body"}}
-{{with .Game}}
-    <h2>{{.Title}}</h2>
+
+    <h2>{{.Game.Title}}</h2>
     <div class="game-card">
         <div>
-            <img src="{{.ImageLink}}" alt="Game Photo">
+            <img src="{{.Game.ImageLink}}" alt="Game Photo">
             <div id="meta">
-                <form action="" method="post" style="display: flex; justify-content: center;">
+                {{if .Ownership}}
+                <a href="/ownership/remove/{{.Ownership.ID}}" style="display: flex; justify-content: center;">
+                    <input type="submit" value="Remove from Library">
+                </a>
+                {{else}}
+                <a href="/ownership/add/{{.Game.ID}}" style="display: flex; justify-content: center;">
                     <input type="submit" value="Add to Library">
-                </form>
+                </a>
+                {{end}}
             </div>
         </div>
         <div>
             <p>
-                {{.Description}}
+                {{.Game.Description}}
             </p>
         </div>
     </div>
-{{end}}
+
     <h2 style="text-align: center">Players: {{len .Users}}</h2>
     {{if .Users}}
         <table>
@@ -35,7 +41,7 @@
                     <td class="td-poster">
                         <img src="{{.ImageLink}}" alt="Visual">
                     </td>
-                    <td><a href='/game/{{.ID}}' style="color: #FEC260">{{.Name}}</a></td>
+                    <td><a href='/user/{{.ID}}' style="color: #FEC260">{{.Name}}</a></td>
                     <td>{{.Email}}</td>
                     <td>#{{.ID}}</td>
                 </tr>

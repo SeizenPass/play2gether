@@ -5,31 +5,53 @@
 {{define "body"}}
 <!------ Include the above in your HEAD tag ---------->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<div class="profile-card">
-    {{with .User}}
+<form class="profile-card" method="post" action="/user/update">
+    <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
     <div class="profile-image">
-        <img src="{{.ImageLink}}" alt="Profile Image">
+        <img src="{{.User.ImageLink}}" alt="Profile Image">
+        {{if ne .User.ID .AuthenticatedUser.ID}}
+            <a href="">
+                <input type="button" value="Chat">
+            </a>
+            <a href="/review/add/{{.User.ID}}">
+                <input type="button" value="Write Review">
+            </a>
+        {{end}}
+        <a href="/review/show/{{.User.ID}}">
+            <input type="button" value="Read Reviews">
+        </a>
     </div>
     <div class="bio">
         <div>
             <div>Name:</div>
-            <div>{{.Name}}</div>
+            <div>{{.User.Name}}</div>
         </div>
         <div>
             <div>Email:</div>
-            <div>{{.Email}}</div>
+            <div>{{.User.Email}}</div>
         </div>
+        <div>Bio:</div>
+        <textarea name="bio" maxlength="1500"
+        {{if ne .AuthenticatedUser.ID .User.ID}}
+                readonly
+        {{end}}
+        >{{if .User.Bio}}{{.User.Bio}}{{end}}</textarea>
+        {{if eq .AuthenticatedUser.ID .User.ID}}
+            <div style="display: flex; justify-content: center">
+                <input type="submit" value="Save">
+            </div>
+        {{end}}
+
     </div>
-</div>
-{{end}}
+</form>
+
 <div class="list-games">
-    <h2>Games</h2>
+    <h2 style="text-align: center">Games</h2>
     {{if .Games}}
         <table>
             <tr>
                 <th style="text-align: center">Poster</th>
                 <th>Title</th>
-                <th>Players</th>
                 <th>ID</th>
             </tr>
             {{range .Games}}
@@ -38,7 +60,6 @@
                         <img src="{{.ImageLink}}" alt="Visual">
                     </td>
                     <td><a href='/game/{{.ID}}' style="color: #FEC260">{{.Title}}</a></td>
-                    <td>155</td>
                     <td>#{{.ID}}</td>
                 </tr>
             {{end}}
