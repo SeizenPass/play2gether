@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/justinas/nosurf"
 	"github.com/SeizenPass/play2gether/pkg/models"
+	"github.com/justinas/nosurf"
 )
 
 func secureHeaders(next http.Handler) http.Handler {

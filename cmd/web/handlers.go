@@ -204,3 +204,10 @@ func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {
 func ping(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("OK"))
 }
+
+func (app *application) profilePage(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, "profile.page.tmpl", &templateData{
+		Form: forms.New(nil),
+	})
+}
+

@@ -41,7 +41,7 @@ func main() {
 
 	addr := flag.String("addr", ":4000", "HTTP network address")
 	staticDir := flag.String("static", "./ui/static/", "Directory where static files are located.")
-	dsn := flag.String("dsn", "root:@/play2gether?parseTime=true", "MySQL data source name")
+	dsn := flag.String("dsn", "raissov:Password1!@/play2gether?parseTime=true", "MySQL data source name")
 	secret := flag.String("secret", "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "Secret session key")
 
 	flag.Parse()
