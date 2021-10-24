@@ -1,2 +1,2 @@
-# lets-go
-Following along Alex Edwards excellent book.
+# Play2Gether
+Raissov Beknur, Kurman Amiran, Anton Podlesnyy
