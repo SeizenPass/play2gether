@@ -7,8 +7,8 @@ import (
 	"runtime/debug"
 	"time"
 
-	"github.com/justinas/nosurf"
 	"github.com/SeizenPass/play2gether/pkg/models"
+	"github.com/justinas/nosurf"
 )
 
 // serverError helper writes error and stack trace to errorLog and sends a 500

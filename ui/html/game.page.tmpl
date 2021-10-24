@@ -1,0 +1,22 @@
+{{template "base" .}}
+
+{{define "title"}}Game | {{.Game.Title}}{{end}}
+
+{{define "body"}}
+{{with .Game}}
+    <h2>{{.Title}}</h2>
+    <div class="game-card">
+        <div>
+            <img src="{{.ImageLink}}" alt="Game Photo">
+            <div id="meta">
+                Metadata
+            </div>
+        </div>
+        <div>
+            <p>
+                {{.Description}}
+            </p>
+        </div>
+    </div>
+{{end}}
+{{end}}

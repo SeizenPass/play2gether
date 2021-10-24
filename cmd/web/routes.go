@@ -21,6 +21,9 @@ func (app *application) routes(staticDir string) http.Handler {
 	mux.Get("/snippet/:id", dynamicMiddleware.ThenFunc(app.showSnippet))
 
 	/* Play2GetHer */
+	mux.Get("/hub", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showHub))
+	mux.Get("/game/:id", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showGame))
+	mux.Get("/game", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.showListOfGames))
 
 	mux.Get("/user/signup", dynamicMiddleware.ThenFunc(app.signupUserForm))
 	mux.Post("/user/signup", dynamicMiddleware.ThenFunc(app.signupUser))

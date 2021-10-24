@@ -12,9 +12,9 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/SeizenPass/play2gether/pkg/models/mysql"
 	_ "github.com/go-sql-driver/mysql" // blank identifier alias, underscore stops compiler throwing and error
 	"github.com/golangcollege/sessions"
-	"github.com/SeizenPass/play2gether/pkg/models/mysql"
 )
 
 type contextKey string
@@ -23,12 +23,13 @@ var contextKeyUser = contextKey("user")
 
 // application struct
 type application struct {
-	errorLog      *log.Logger
-	infoLog       *log.Logger
-	session       *sessions.Session
-	snippets      *mysql.SnippetModel
-	templateCache map[string]*template.Template
-	users         *mysql.UserModel
+	errorLog      	*log.Logger
+	infoLog       	*log.Logger
+	session       	*sessions.Session
+	snippets      	*mysql.SnippetModel
+	templateCache 	map[string]*template.Template
+	users         	*mysql.UserModel
+	games		  	*mysql.GameModel
 }
 
 func main() {
@@ -75,6 +76,7 @@ func main() {
 		snippets: &mysql.SnippetModel{
 			DB: db,
 		},
+		games: &mysql.GameModel{DB: db},
 		templateCache: templateCache,
 		users:         &mysql.UserModel{DB: db},
 	}
