@@ -11,6 +11,13 @@ var (
 	ErrDuplicateEmail     = errors.New("models: duplicate email")
 )
 
+type Game struct {
+	ID			int
+	Title		string
+	ImageLink	string
+	Description string
+}
+
 type Snippet struct {
 	ID      int
 	Title   string

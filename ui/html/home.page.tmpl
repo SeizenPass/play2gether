@@ -8,5 +8,7 @@
     <p>Tired of unpredictable behaviour of potential teammates?
         Now, with our service, you can find the people that really
         match your expectations, based on the profiles and user reviews.</p>
+    {{if not .AuthenticatedUser}}
     <a href="/user/signup"><input type="button" value="Get Started"></a>
+    {{end}}
 {{end}}

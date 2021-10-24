@@ -1,0 +1,29 @@
+{{template "base" .}}
+
+{{define "title"}}All Games{{end}}
+
+{{define "body"}}
+    <h2>Games</h2>
+    {{if .Games}}
+        <table>
+            <tr>
+                <th>Poster</th>
+                <th>Title</th>
+                <th>Created</th>
+                <th>ID</th>
+            </tr>
+            {{range .Games}}
+                <tr>
+                    <td class="td-poster">
+                        <img src="{{.ImageLink}}" alt="Visual">
+                    </td>
+                    <td><a href='/game/{{.ID}}' style="color: #FEC260">{{.Title}}</a></td>
+                    <td>Smth</td>
+                    <td>#{{.ID}}</td>
+                </tr>
+            {{end}}
+        </table>
+    {{else}}
+        <p>There's nothing to see here yet!</p>
+    {{end}}
+{{end}}
