@@ -14,7 +14,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql" // blank identifier alias, underscore stops compiler throwing and error
 	"github.com/golangcollege/sessions"
-	"github.com/kwhitlock/lets-go-book/pkg/models/mysql"
+	"github.com/SeizenPass/play2gether/pkg/models/mysql"
 )
 
 type contextKey string
@@ -40,7 +40,7 @@ func main() {
 
 	addr := flag.String("addr", ":4000", "HTTP network address")
 	staticDir := flag.String("static", "./ui/static/", "Directory where static files are located.")
-	dsn := flag.String("dsn", "web:pass@/snippetbox?parseTime=true", "MySQL data source name")
+	dsn := flag.String("dsn", "root:@/play2gether?parseTime=true", "MySQL data source name")
 	secret := flag.String("secret", "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "Secret session key")
 
 	flag.Parse()

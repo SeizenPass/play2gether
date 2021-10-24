@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/kwhitlock/lets-go-book/pkg/models"
+	"github.com/SeizenPass/play2gether/pkg/models"
 )
 
 // SnippetModel Snippet struct

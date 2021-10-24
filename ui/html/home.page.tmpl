@@ -3,23 +3,10 @@
 {{define "title"}}Home{{end}}
 
 {{define "body"}}
-    <h2>Latest Snippets</h2>
-    {{if .Snippets}}
-    <table>
-        <tr>
-            <th>Title</th>
-            <th>Created</th>
-            <th>ID</th>
-        </tr>
-        {{range .Snippets}}
-        <tr>
-            <td><a href='/snippet/{{.ID}}'>{{.Title}}</a></td>
-            <td>{{humanDate .Created}}</td>
-            <td>#{{.ID}}</td>
-        </tr>
-        {{end}}
-    </table>
-    {{else}}
-        <p>There's nothing to see here yet!</p>
-    {{end}}
+    <h1 style="font-size: 30px">Play2Gether</h1>
+    <h3 style="color: #A12568">Play with people you match with</h3>
+    <p>Tired of unpredictable behaviour of potential teammates?
+        Now, with our service, you can find the people that really
+        match your expectations, based on the profiles and user reviews.</p>
+    <a href="/user/signup"><input type="button" value="Get Started"></a>
 {{end}}

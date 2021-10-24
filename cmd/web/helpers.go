@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/justinas/nosurf"
-	"github.com/kwhitlock/lets-go-book/pkg/models"
+	"github.com/SeizenPass/play2gether/pkg/models"
 )
 
 // serverError helper writes error and stack trace to errorLog and sends a 500

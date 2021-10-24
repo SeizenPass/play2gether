@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/justinas/nosurf"
-	"github.com/kwhitlock/lets-go-book/pkg/models"
+	"github.com/SeizenPass/play2gether/pkg/models"
 )
 
 func secureHeaders(next http.Handler) http.Handler {
