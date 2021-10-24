@@ -16,7 +16,7 @@ import (
 	_ "github.com/go-sql-driver/mysql" // blank identifier alias, underscore stops compiler throwing and error
 	"github.com/golangcollege/sessions"
 )
-
+// main file
 type contextKey string
 
 var contextKeyUser = contextKey("user")
