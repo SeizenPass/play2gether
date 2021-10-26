@@ -1,1 +1,1 @@
-web: go run cmd/web
+web: bin/play2gether
