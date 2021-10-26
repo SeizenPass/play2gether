@@ -1,1 +1,1 @@
-web: bin/play2gether
+web: ls bin
