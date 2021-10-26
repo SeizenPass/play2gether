@@ -43,12 +43,13 @@ func main() {
 	// use os.signal.Notify to send a notification based on the type of os signal.
 	signal.Notify(killSignal, os.Interrupt)
 
+	portEnv := os.Getenv("PORT")
 	//dsnEnv := os.Getenv("DSN")
 	dsnUsername := os.Getenv("dsnUsername")
 	dsnPass := os.Getenv("dsnPass")
 	dsnHost := os.Getenv("dsnHost")
 	dsnDB := os.Getenv("dsnDB")
-	addr := flag.String("addr", ":4000", "HTTP network address")
+	addr := flag.String("addr", fmt.Sprintf(":%s", portEnv), "HTTP network address")
 	staticDir := flag.String("static", "./ui/static/", "Directory where static files are located.")
 	dsn := flag.String("dsn",
 		fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", dsnUsername, dsnPass, dsnHost, dsnDB),
