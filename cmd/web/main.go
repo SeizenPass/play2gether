@@ -43,11 +43,16 @@ func main() {
 	// use os.signal.Notify to send a notification based on the type of os signal.
 	signal.Notify(killSignal, os.Interrupt)
 
-	dsnEnv := os.Getenv("DSN")
-
+	//dsnEnv := os.Getenv("DSN")
+	dsnUsername := os.Getenv("dsnUsername")
+	dsnPass := os.Getenv("dsnPass")
+	dsnHost := os.Getenv("dsnHost")
+	dsnDB := os.Getenv("dsnDB")
 	addr := flag.String("addr", ":4000", "HTTP network address")
 	staticDir := flag.String("static", "./ui/static/", "Directory where static files are located.")
-	dsn := flag.String("dsn", dsnEnv, "MySQL data source name")
+	dsn := flag.String("dsn",
+		fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", dsnUsername, dsnPass, dsnHost, dsnDB),
+		"MySQL data source name")
 	secret := flag.String("secret", "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "Secret session key")
 
 	flag.Parse()
