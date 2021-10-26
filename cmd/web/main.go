@@ -16,6 +16,7 @@ import (
 	_ "github.com/go-sql-driver/mysql" // blank identifier alias, underscore stops compiler throwing and error
 	"github.com/golangcollege/sessions"
 )
+
 // main file
 type contextKey string
 
@@ -23,15 +24,15 @@ var contextKeyUser = contextKey("user")
 
 // application struct
 type application struct {
-	errorLog      	*log.Logger
-	infoLog       	*log.Logger
-	session       	*sessions.Session
-	snippets      	*mysql.SnippetModel
-	templateCache 	map[string]*template.Template
-	users         	*mysql.UserModel
-	games		  	*mysql.GameModel
-	gamesOwnerships	*mysql.GameOwnershipModel
-	reviews   		*mysql.ReviewModel
+	errorLog        *log.Logger
+	infoLog         *log.Logger
+	session         *sessions.Session
+	snippets        *mysql.SnippetModel
+	templateCache   map[string]*template.Template
+	users           *mysql.UserModel
+	games           *mysql.GameModel
+	gamesOwnerships *mysql.GameOwnershipModel
+	reviews         *mysql.ReviewModel
 	chatMessages    *mysql.ChatMessageModel
 }
 
@@ -42,9 +43,11 @@ func main() {
 	// use os.signal.Notify to send a notification based on the type of os signal.
 	signal.Notify(killSignal, os.Interrupt)
 
+	dsnEnv := os.Getenv("DSN")
+
 	addr := flag.String("addr", ":4000", "HTTP network address")
 	staticDir := flag.String("static", "./ui/static/", "Directory where static files are located.")
-	dsn := flag.String("dsn", "root:@/play2gether?parseTime=true", "MySQL data source name")
+	dsn := flag.String("dsn", dsnEnv, "MySQL data source name")
 	secret := flag.String("secret", "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "Secret session key")
 
 	flag.Parse()
@@ -79,12 +82,12 @@ func main() {
 		snippets: &mysql.SnippetModel{
 			DB: db,
 		},
-		games: &mysql.GameModel{DB: db},
+		games:           &mysql.GameModel{DB: db},
 		gamesOwnerships: &mysql.GameOwnershipModel{DB: db},
-		templateCache: templateCache,
-		users:         &mysql.UserModel{DB: db},
-		reviews:       &mysql.ReviewModel{DB: db},
-		chatMessages:  &mysql.ChatMessageModel{DB: db},
+		templateCache:   templateCache,
+		users:           &mysql.UserModel{DB: db},
+		reviews:         &mysql.ReviewModel{DB: db},
+		chatMessages:    &mysql.ChatMessageModel{DB: db},
 	}
 
 	tlsConfig := &tls.Config{
